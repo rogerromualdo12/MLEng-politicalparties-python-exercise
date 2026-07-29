@@ -40,3 +40,16 @@ Please be sure to complete the below tasks before the pairing session.
 3. Ensure that you are able to run all commands mentioned in this README (except for pytest errors)
 
 **Please note that you DO NOT have to complete the code/tasks inside the `src/` folder. It is meant to be done together during a pairing session.**
+
+## Train and run the application
+
+Train the model once before starting the containers:
+
+```bash
+python3 src/train_model.py
+docker compose -f src/compose.yml up --build
+```
+
+Training writes an MLflow model to `data/models`, which is the inference API's
+default model location. Set `MODEL_URI` to use a different MLflow model URI, or
+set `PREDICTION_URL` to point the Streamlit UI at a different inference API.

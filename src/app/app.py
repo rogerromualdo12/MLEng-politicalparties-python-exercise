@@ -1,11 +1,22 @@
+import os
+
+import requests
 import streamlit as st
 
-def get_prediction(input_text):
-    # TODO - task 3
-    # -----------------------------------
-    # Goal: our goal is to complete the implementation of this function, 
-    #       which takes input text and returns a prediction result from a pre-trained model.
-    pass
+PREDICTION_URL = os.getenv(
+    "PREDICTION_URL", "http://model_inference_endpoint:8000/get-prediction/"
+)
+
+
+def get_prediction(input_text: str):
+    """Request a prediction from the model-inference service."""
+    response = requests.post(
+        PREDICTION_URL,
+        json={"input_texts": input_text},
+        timeout=10,
+    )
+    response.raise_for_status()
+    return response.json()["prediction"]
 
 # Streamlit page configuration
 st.set_page_config(page_title="Tweet Classifier", layout="wide")
@@ -18,9 +29,11 @@ tweet_input = st.text_input("Enter your tweet", "")
 
 # Button to trigger prediction
 if st.button("Classify Tweet"):
-    # Get prediction
-    prediction = get_prediction(tweet_input)
-    
-    # Display the prediction
-    st.write("Prediction:", prediction)
+    try:
+        prediction = get_prediction(tweet_input)
+        st.write("Prediction:", prediction)
+    except requests.RequestException:
+        st.error("The prediction service is unavailable. Please try again later.")
+    except (KeyError, ValueError):
+        st.error("The prediction service returned an invalid response.")
 

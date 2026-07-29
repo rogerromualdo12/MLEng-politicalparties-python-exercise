@@ -10,3 +10,4 @@ pytest
 pandas
 numpy
 pytest-mock
+scikit-learn
