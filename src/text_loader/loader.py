@@ -13,11 +13,13 @@ class DataLoader:
 
     def load_data(self):
         """Loads data from a CSV file."""
-        return pd.read_csv(self.filepath)
+        self.data = pd.read_csv(self.filepath)
+        return self.data
 
     @staticmethod
     def remove_characters(text: str) -> str:
         """Remove non-letters from a given string"""
+        text = re.sub(r"\d+", "", str(text))
         remove_chars = string.punctuation
         translator = str.maketrans('', '', remove_chars)
         return text.translate(translator)
