@@ -1,5 +1,4 @@
 import pandas as pd
-import string
 import re
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import LabelEncoder
@@ -18,9 +17,7 @@ class DataLoader:
     @staticmethod
     def remove_characters(text: str) -> str:
         """Remove non-letters from a given string"""
-        remove_chars = string.punctuation
-        translator = str.maketrans('', '', remove_chars)
-        return text.translate(translator)
+        return re.sub(r"[^A-Za-z]", "", text)
 
     def clean_text(self, text: str) -> str:
         """Keep only retain words in a given string"""
