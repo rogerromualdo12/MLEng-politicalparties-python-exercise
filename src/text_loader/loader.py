@@ -13,17 +13,22 @@ class DataLoader:
 
     def load_data(self):
         """Loads data from a CSV file."""
-        return pd.read_csv(self.filepath)
+        self.data = pd.read_csv(self.filepath)
+        return self.data
 
     @staticmethod
     def remove_characters(text: str) -> str:
         """Remove non-letters from a given string"""
-        remove_chars = string.punctuation
+        remove_chars = string.punctuation + string.digits
         translator = str.maketrans('', '', remove_chars)
         return text.translate(translator)
 
     def clean_text(self, text: str) -> str:
         """Keep only retain words in a given string"""
+        if not isinstance(text, str):
+            return ""
+
+        text = re.sub(r"https?://\S+|www\.\S+", "", text)  # Remove URLs
         text = self.remove_characters(text)
         return text.strip()
 

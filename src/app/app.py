@@ -1,11 +1,14 @@
 import streamlit as st
+import requests
+
 
 def get_prediction(input_text):
     # TODO - task 3
     # -----------------------------------
     # Goal: our goal is to complete the implementation of this function, 
     #       which takes input text and returns a prediction result from a pre-trained model.
-    pass
+    response = requests.post("http://localhost:8000/get-prediction/", json={"input_texts": input_text})
+    return response.json()["prediction"]
 
 # Streamlit page configuration
 st.set_page_config(page_title="Tweet Classifier", layout="wide")

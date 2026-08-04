@@ -19,4 +19,7 @@ def get_prediction(input_data: InputText):
     # -----------------------------------
     # Goal: our goal is to complete the implementation of this function, 
     #       which takes input data and returns a prediction result from a pre-trained model.
-    pass
+    model = mlflow.pyfunc.load_model("data/models")
+    prediction = model.predict([input_data.input_texts])[0]
+
+    return {"prediction": str(prediction)}
