@@ -6,6 +6,9 @@ services:
       dockerfile: ./app/Dockerfile
     ports:
       - "8501:8501"
+    environment:
+      PREDICTION_API_URL: http://model_inference_endpoint:8000/get-prediction/
+
 
   model_inference_endpoint:
     build:
@@ -13,5 +16,7 @@ services:
       dockerfile: ./model-inference-endpoint/Dockerfile
     volumes:
       - ../data:/usr/src/app/data
+    environment:
+      MODEL_URI: /usr/src/app/data/models
     ports:
       - "8000:8000"
